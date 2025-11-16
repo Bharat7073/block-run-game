@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Game Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial;
+            background: #333;
+            color: white;
+        }
+        #status {
+            padding: 10px;
+            background: #555;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        canvas {
+            border: 2px solid white;
+            background: #000;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="status">Loading...</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <br>
+    <button id="startButton">Start Game</button>
+    <button id="testButton">Test Canvas</button>
+    
+    <script>
+        const status = document.getElementById('status');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Test canvas
+        function testCanvas() {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(100, 100, 100, 100);
+            ctx.fillStyle = 'white';
+            ctx.font = '20px Arial';
+            ctx.fillText('Canvas Works!', 250, 150);
+            status.textContent = 'Canvas test: SUCCESS - Red square drawn';
+        }
+        
+        // Test button
+        document.getElementById('testButton').onclick = testCanvas;
+        
+        // Try to load game.js
+        status.textContent = 'Attempting to load game.js...';
+        const script = document.createElement('script');
+        script.src = 'game.js';
+        script.onload = function() {
+            status.textContent = 'game.js loaded! Check console for initialization messages.';
+            setTimeout(() => {
+                if (typeof window.canvas !== 'undefined' && window.canvas) {
+                    status.textContent += ' Game initialized!';
+                } else {
+                    status.textContent += ' Warning: Game may not have initialized. Check console.';
+                }
+            }, 500);
+        };
+        script.onerror = function() {
+            status.textContent = 'ERROR: Could not load game.js! Make sure server is running.';
+        };
+        document.body.appendChild(script);
+        
+        // Run canvas test after a moment
+        setTimeout(testCanvas, 1000);
+    </script>
+</body>
+</html>
+

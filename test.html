@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Test</title>
+</head>
+<body>
+    <h1>Testing Game Files</h1>
+    <div id="test-results"></div>
+    <script>
+        const results = document.getElementById('test-results');
+        
+        // Test 1: Check if files exist (by trying to load them)
+        function testFile(url, name) {
+            return fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        results.innerHTML += `<p style="color: green;">✓ ${name} found (${response.status})</p>`;
+                        return true;
+                    } else {
+                        results.innerHTML += `<p style="color: red;">✗ ${name} not found (${response.status})</p>`;
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    results.innerHTML += `<p style="color: red;">✗ ${name} error: ${error.message}</p>`;
+                    return false;
+                });
+        }
+        
+        // Test files
+        Promise.all([
+            testFile('index.html', 'index.html'),
+            testFile('game.js', 'game.js'),
+            testFile('style.css', 'style.css')
+        ]).then(() => {
+            results.innerHTML += '<p><strong>All tests complete. Check the results above.</strong></p>';
+            results.innerHTML += '<p><a href="index.html">Open Game</a></p>';
+        });
+    </script>
+</body>
+</html>
+

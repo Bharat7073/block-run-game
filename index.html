@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temple Run - Endless Runner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="ui-overlay">
+            <div class="score-display">
+                <div class="score-label">Score</div>
+                <div id="score">0</div>
+            </div>
+            <div class="distance-display">
+                <div class="distance-label">Distance</div>
+                <div id="distance">0m</div>
+            </div>
+        </div>
+        <div id="startScreen" class="screen">
+            <h1>Temple Run</h1>
+            <p>Use SPACE or UP ARROW to jump</p>
+            <p>Avoid falling off the platforms!</p>
+            <button id="startButton">Start Game</button>
+        </div>
+        <div id="gameOverScreen" class="screen hidden">
+            <h1>Game Over</h1>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <p>Distance: <span id="finalDistance">0m</span></p>
+            <button id="restartButton">Play Again</button>
+        </div>
+    </div>
+    <script>
+        console.log('=== PAGE LOADING ===');
+        console.log('Document ready state:', document.readyState);
+        
+        // Global error handler
+        window.addEventListener('error', function(e) {
+            console.error('ERROR:', e.message, 'at', e.filename + ':' + e.lineno);
+            if (e.filename && e.filename.includes('game.js')) {
+                alert('Error loading game.js! Check console for details.');
+            }
+        }, true);
+        
+        // Verify script loads
+        window.addEventListener('load', function() {
+            console.log('=== PAGE FULLY LOADED ===');
+            setTimeout(function() {
+                if (typeof window.canvas === 'undefined' || !window.canvas) {
+                    console.error('GAME NOT INITIALIZED! Canvas variable is undefined.');
+                    alert('Game failed to initialize. Check browser console (F12) for errors.');
+                } else {
+                    console.log('Game appears to be initialized. Canvas:', window.canvas);
+                }
+            }, 1000);
+        });
+        
+        // Also check after a delay
+        setTimeout(function() {
+            console.log('Delayed check - Canvas:', typeof window.canvas !== 'undefined' ? 'EXISTS' : 'UNDEFINED');
+            console.log('Delayed check - Game state:', typeof window.gameState !== 'undefined' ? window.gameState : 'UNDEFINED');
+        }, 2000);
+    </script>
+    <script src="game.js"></script>
+    <script>
+        console.log('game.js script tag processed');
+    </script>
+</body>
+</html>
+

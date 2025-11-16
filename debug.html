@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Debug</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        .test { margin: 10px 0; padding: 10px; background: white; border-radius: 5px; }
+        .pass { color: green; }
+        .fail { color: red; }
+        pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Game Debugging Tool</h1>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        function addTest(name, passed, details) {
+            const div = document.createElement('div');
+            div.className = 'test';
+            div.innerHTML = `<strong>${name}:</strong> <span class="${passed ? 'pass' : 'fail'}">${passed ? '✓ PASS' : '✗ FAIL'}</span>${details ? '<pre>' + details + '</pre>' : ''}`;
+            results.appendChild(div);
+        }
+        
+        // Test 1: Check if files exist
+        async function testFiles() {
+            const files = ['index.html', 'game.js', 'style.css'];
+            for (const file of files) {
+                try {
+                    const response = await fetch(file);
+                    addTest(`File: ${file}`, response.ok, `Status: ${response.status}`);
+                } catch (e) {
+                    addTest(`File: ${file}`, false, `Error: ${e.message}`);
+                }
+            }
+        }
+        
+        // Test 2: Check DOM elements
+        function testDOM() {
+            const elements = ['gameCanvas', 'startButton', 'restartButton', 'score', 'distance'];
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                addTest(`DOM Element: #${id}`, !!el, el ? 'Found' : 'Not found');
+            });
+        }
+        
+        // Test 3: Try loading game.js
+        function testGameJS() {
+            const script = document.createElement('script');
+            script.src = 'game.js';
+            script.onload = () => {
+                addTest('game.js loaded', true, 'Script loaded successfully');
+                setTimeout(() => {
+                    if (typeof canvas !== 'undefined') {
+                        addTest('Canvas variable', true, 'Canvas variable exists');
+                    } else {
+                        addTest('Canvas variable', false, 'Canvas variable not found');
+                    }
+                }, 100);
+            };
+            script.onerror = () => {
+                addTest('game.js loaded', false, 'Failed to load script');
+            };
+            document.body.appendChild(script);
+        }
+        
+        // Run all tests
+        testFiles();
+        setTimeout(() => {
+            testDOM();
+            testGameJS();
+        }, 500);
+        
+        // Add link to game
+        setTimeout(() => {
+            const link = document.createElement('a');
+            link.href = 'index.html';
+            link.textContent = '→ Open Game';
+            link.style.display = 'block';
+            link.style.marginTop = '20px';
+            link.style.fontSize = '20px';
+            link.style.padding = '10px';
+            link.style.background = '#667eea';
+            link.style.color = 'white';
+            link.style.textDecoration = 'none';
+            link.style.borderRadius = '5px';
+            results.appendChild(link);
+        }, 1000);
+    </script>
+</body>
+</html>
+

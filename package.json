@@ -1,0 +1,13 @@
+{
+  "name": "temple-run-game",
+  "version": "1.0.0",
+  "description": "Temple Run style endless runner game",
+  "scripts": {
+    "dev": "npx http-server -p 8080 -o",
+    "start": "npx http-server -p 8080 -o"
+  },
+  "keywords": ["game", "temple-run", "endless-runner"],
+  "author": "",
+  "license": "MIT"
+}
+
